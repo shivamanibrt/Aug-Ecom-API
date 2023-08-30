@@ -1,2 +1,16 @@
 ### Check server status
-Get http://localhost:8000/api/v1/api/v1/admin-user
+Get http://localhost:8000/api/v1
+
+###Post new admin user
+POST http://localhost:8000/api/v1/admin-user
+Content-Type: application/json
+
+{
+    "fName":"Shivamani",
+    "lName":"Bartaula",
+    "email":"shivamani@email.com",
+    "password":"12345678",
+    "phone":"0414449540",
+    "address":"Sydney",
+    "dob":"2022-02-20"
+}

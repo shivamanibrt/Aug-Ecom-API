@@ -1,4 +1,6 @@
 import express from 'express'
+import { dbConnect } from './src/Config/dbConfig.js';
+import adminUserRouter from './src/Router/adminUserRouter.js';
 import cors from 'cors'
 import helmet from 'helmet'
 const app = express();
@@ -11,15 +13,22 @@ app.use(helmet());
 app.use(express.json());
 
 //api
-import adminUserRouter from './src/Router/adminUserRouter.js';
-app.use('api/v1/admin-user', adminUserRouter)
+
+app.use('/api/v1/admin-user', adminUserRouter)
+
+//dbConnection
+dbConnect();
 
 //this is default end point
-app.get('/', (req, res, next) => {
-    res.json({
-        status: 'success',
-        message: 'Hi there you reached to API'
-    })
+app.use('/', (req, res, next) => {
+    try {
+        res.json({
+            status: 'success',
+            message: 'Hi there you reached to API'
+        })
+    } catch (error) {
+        next(error)
+    }
 })
 
 app.use((error, req, res, next) => {
@@ -31,6 +40,6 @@ app.use((error, req, res, next) => {
 })
 
 app.listen(PORT, error => {
-    error ? console.log(error) :
-        console.log(`Server running at http://localhost:${PORT}`);
+    error && console.log(error);
+    console.log(`Server running at http://localhost:${PORT}`);
 })
