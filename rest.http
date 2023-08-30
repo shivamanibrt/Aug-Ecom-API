@@ -1,0 +1,2 @@
+### Check server status
+Get http://localhost:8000/api/v1/api/v1/admin-user
