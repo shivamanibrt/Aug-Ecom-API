@@ -1,48 +1,46 @@
 import mongoose from "mongoose";
 
-const AdminUserSchema = new mongoose.Schema({
+const adminUserSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'inactive'
     },
     fName: {
         type: String,
-        required: true,
-        maxLength: [20, 'First name cant be longer than 20 character']
+        required: [true, 'First name is required'],
+        maxLength: [20, 'First name cannot be longer than 20 characters']
     },
     lName: {
         type: String,
-        required: true,
-        maxLength: [20, 'First name cant be longer than 20 character']
+        required: [true, 'Last name is required'],
+        maxLength: [20, 'Last name cannot be longer than 20 characters']
     },
     email: {
         type: String,
         unique: true,
         index: 1,
-        required: true,
-        maxLength: [20, 'First name cant be longer than 20 character']
+        required: [true, 'Email is required'],
+        maxLength: [50, 'Email cannot be longer than 50 characters']
     },
     password: {
         type: String,
-        required: true,
+        required: [true, 'Password is required']
     },
     phone: {
         type: String,
-        required: true,
-        maxLength: [15, 'Phone numer cant be longer than 15 character']
+        required: [true, 'Phone number is required'],
+        maxLength: [15, 'Phone number cannot be longer than 15 characters']
     },
     address: {
         type: String,
-        required: true,
         default: 'n/a'
     },
     dob: {
-        type: String,
-        required: true,
+        type: Date,
         default: null
-    },
+    }
 }, {
     timestamps: true,
-})
+});
 
-export default mongoose.model("Admin_user", AdminUserSchema);
+export default mongoose.model("Admin_user", adminUserSchema);

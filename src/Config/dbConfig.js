@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
 
+dotenv.config();
 export const dbConnect = async () => {
     try {
         const conStr = process.env.MONGO_CLIENT;
@@ -9,6 +11,6 @@ export const dbConnect = async () => {
         const con = await mongoose.connect(conStr);
         con && console.log('Mongo Db Connected')
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
     }
 }

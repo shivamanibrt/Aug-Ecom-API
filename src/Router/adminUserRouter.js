@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/', async (req, res, next) => {
     try {
-        // console.log(req.body);
+        console.log(req.body);
         const user = await insertAdminUSer(req.body);
 
         user?._id ? res.json({

@@ -1,5 +1,5 @@
-import AdminUserSchema from "./AdminUserSchema.js";
+import adminUserSchema from "./AdminUserSchema.js";
 
 export const insertAdminUSer = (obj) => {
-    return AdminUserSchema(obj).save();
+    return adminUserSchema(obj).save();
 }

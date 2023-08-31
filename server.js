@@ -1,6 +1,4 @@
 import express from 'express'
-import { dbConnect } from './src/Config/dbConfig.js';
-import adminUserRouter from './src/Router/adminUserRouter.js';
 import cors from 'cors'
 import helmet from 'helmet'
 const app = express();
@@ -13,10 +11,11 @@ app.use(helmet());
 app.use(express.json());
 
 //api
-
+import adminUserRouter from './src/Router/adminUserRouter.js';
 app.use('/api/v1/admin-user', adminUserRouter)
 
 //dbConnection
+import { dbConnect } from './src/Config/dbConfig.js';
 dbConnect();
 
 //this is default end point
@@ -33,7 +32,7 @@ app.use('/', (req, res, next) => {
 
 app.use((error, req, res, next) => {
     const statusCode = error.status || 404
-    res(statusCode).json({
+    res.status(statusCode).json({
         status: 'error',
         message: error.message
     })
