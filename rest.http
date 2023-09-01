@@ -1,6 +1,10 @@
 ### Check server status
 Get http://localhost:8000/api/v1
 
+###Get admin user
+GET http://localhost:8000/api/v1/admin-user
+
+
 ###Post new admin user
 POST http://localhost:8000/api/v1/admin-user
 Content-Type: application/json
@@ -8,9 +12,19 @@ Content-Type: application/json
 {
     "fName":"Shivamani",
     "lName":"Bartaula",
-    "email":"shivamani@email.com",
+    "email":"sshivamani@email.com",
     "password":"12345678",
     "phone":"0414449540",
     "address":"Sydney",
     "dob":"2022-02-20"
+}
+
+###Delete user
+DELETE http://localhost:8000/api/v1/admin-user
+Content-Type: application/json
+
+{
+     "ids":[
+        "64f1475db842a773556e66af"  
+     ] 
 }

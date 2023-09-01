@@ -30,13 +30,18 @@ app.use('/', (req, res, next) => {
     }
 })
 
+//global error handler
 app.use((error, req, res, next) => {
-    const statusCode = error.status || 404
-    res.status(statusCode).json({
-        status: 'error',
-        message: error.message
-    })
-})
+    try {
+        const statusCode = error.status || 500;
+        res.status(statusCode).json({
+            status: 'error',
+            message: error.message
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
 app.listen(PORT, error => {
     error && console.log(error);
