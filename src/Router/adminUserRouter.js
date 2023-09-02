@@ -29,7 +29,6 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
     try {
         const { password } = req.body;
         req.body.password = hashPasswords(password);
-
         const user = await insertAdminUSer(req.body);
         user?._id
             ? res.json({

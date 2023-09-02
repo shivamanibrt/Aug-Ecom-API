@@ -12,7 +12,7 @@ Content-Type: application/json
 {
     "fName":"Shivamani",
     "lName":"Bartaula",
-    "email":"sshivamani@email.com",
+    "email":"ssshivamani@email.com",
     "password":"12345678",
     "phone":"0414449540",
     "address":"Sydney",
@@ -25,6 +25,6 @@ Content-Type: application/json
 
 {
      "ids":[
-        "64f1475db842a773556e66af"  
+        "64f2900339173a81ee23a754"  
      ] 
 }
