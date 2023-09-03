@@ -1,13 +1,14 @@
 import adminUserSchema from "./AdminUserSchema.js";
 
-export const getAdminUSer = () => {
-    return adminUserSchema.find();
-}
-
+//Create
 export const insertAdminUSer = (obj) => {
     return adminUserSchema(obj).save();
 }
-
+//Read
+export const getAdminUSer = () => {
+    return adminUserSchema.find();
+}
+//Delete
 export const deleteAdminUser = (ids) => {
     return adminUserSchema.deleteMany({ "_id": { $in: ids } })
 }

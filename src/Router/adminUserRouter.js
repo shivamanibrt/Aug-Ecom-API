@@ -3,6 +3,8 @@ import { deleteAdminUser, getAdminUSer, insertAdminUSer } from '../Modles/adminU
 import { hashPasswords } from '../Helper/bcryptHelper.js';
 import { newAdminUservalidation } from '../MiddleWares/Joy-Valication/adminUserValidation.js';
 const router = express.Router();
+import { v4 as uuidv4 } from 'uuid';
+import { verificationEmail } from '../Helper/emailHelper.js';
 
 
 //server side validation
@@ -29,16 +31,28 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
     try {
         const { password } = req.body;
         req.body.password = hashPasswords(password);
+        req.body.emailValicationCode = uuidv4();
         const user = await insertAdminUSer(req.body);
-        user?._id
-            ? res.json({
+
+        if (user?._id) {
+            res.json({
                 status: 'success',
                 message: 'we have sent you and email to verify your account please check your mailbox'
-            }) :
-            res.json({
-                status: 'error',
-                message: 'todo create new user'
+            });
+            const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?c=${user.emailValicationCode}&e=${user.email}`
+            //send email
+            verificationEmail({
+                fName: user.fName,
+                lName: user.lName,
+                email: user.email,
+                url
             })
+            return;
+        }
+        res.json({
+            status: 'error',
+            message: 'Unable to create new user'
+        })
     } catch (error) {
         if (error.message.includes("E1100")) {
             error.status = 200;

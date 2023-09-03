@@ -2,8 +2,7 @@
 Get http://localhost:8000/api/v1
 
 ###Get admin user
-GET http://localhost:8000/api/v1/admin-user
-
+GET http://localhost:8000/api/v1/admin-user/64f29130f71e58218323a644
 
 ###Post new admin user
 POST http://localhost:8000/api/v1/admin-user
@@ -12,7 +11,7 @@ Content-Type: application/json
 {
     "fName":"Shivamani",
     "lName":"Bartaula",
-    "email":"ssshivamani@email.com",
+    "email":"shivamani@email.com",
     "password":"12345678",
     "phone":"0414449540",
     "address":"Sydney",
@@ -25,6 +24,9 @@ Content-Type: application/json
 
 {
      "ids":[
-        "64f2900339173a81ee23a754"  
+        "64f405d4e05a496ee7ef0751",  
+        "64f4058d6db64fe4bcfc7839" , 
+        "64f2913ef71e58218323a64a",  
+        "64f29130f71e58218323a644"  
      ] 
 }
