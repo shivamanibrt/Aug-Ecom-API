@@ -24,19 +24,20 @@ const emailProcessor = async (emailBody) => {
 //Make sure the eamil data has fName, email and Url
 export const verificationEmail = (emailData) => {
     const emailBody = {
-        from: '"Shivamani Sore" <myEmail@shivamani.com>', // sender address
-        to: emailData.email,
-        subject: "Email verification instruction ✔", // Subject line
-        text: `Hi ${emailData.fName} please verify the email ${emailData.url}`, // plain text body
+        from: '"Shivamani Sore" <myEmail@shivamani.com>', // Sender's email address
+        to: emailData.email, // Recipient's email address
+        subject: "Email Verification Instructions ✔", // Email subject line
+        text: `Hi ${emailData.fName},\n\nPlease verify your email by clicking the following link: ${emailData.url}\n\nBest regards,\nShivamani Store`, // Plain text body
         html: `
-        <p>${emailData.fName}</p>
-        <br/>
-        <br/>
-        <p><a href='${emailData.url}'>Verify Email</a></p>
-        <p></p>
-        <br/>
-        Shivamani Store
-        `
-    }
+            <p>Hi ${emailData.fName},</p>
+            <br/>
+            <br/>
+            <p><a href='${emailData.url}'>Verify Email</a></p>
+            <p></p>
+            <br/>
+            <p>Best regards,<br/>Shivamani Store</p>
+        ` // HTML body
+    };
+
     emailProcessor(emailBody)
 }

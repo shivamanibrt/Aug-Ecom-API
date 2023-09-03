@@ -10,12 +10,13 @@ export const newAdminUservalidation = (req, res, next) => {
             password: Joi.string().max(20).required(),
             phone: Joi.string().max(20).required(),
             address: Joi.string().max(20),
-            dob: Joi.date().allow("", null)
+            dob: Joi.date().allow("", null),
+            emailValidationCode: Joi.string()
         })
         //give data to the rules
         const { error } = schema.validate(req.body)
         if (error) {
-            error.status = 200;
+            error.status = 400;
             return next(error)
         }
         next(error)

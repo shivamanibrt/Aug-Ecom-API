@@ -31,7 +31,7 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
     try {
         const { password } = req.body;
         req.body.password = hashPasswords(password);
-        req.body.emailValicationCode = uuidv4();
+        req.body.emailValidationCode = uuidv4();
         const user = await insertAdminUSer(req.body);
 
         if (user?._id) {
@@ -39,7 +39,7 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
                 status: 'success',
                 message: 'we have sent you and email to verify your account please check your mailbox'
             });
-            const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?c=${user.emailValicationCode}&e=${user.email}`
+            const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?c=${user.emailValidationCode}&e=${user.email}`
             //send email
             verificationEmail({
                 fName: user.fName,

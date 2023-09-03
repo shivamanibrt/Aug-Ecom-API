@@ -2,7 +2,7 @@
 Get http://localhost:8000/api/v1
 
 ###Get admin user
-GET http://localhost:8000/api/v1/admin-user/64f29130f71e58218323a644
+GET http://localhost:8000/api/v1/admin-user
 
 ###Post new admin user
 POST http://localhost:8000/api/v1/admin-user
@@ -24,9 +24,6 @@ Content-Type: application/json
 
 {
      "ids":[
-        "64f405d4e05a496ee7ef0751",  
-        "64f4058d6db64fe4bcfc7839" , 
-        "64f2913ef71e58218323a64a",  
-        "64f29130f71e58218323a644"  
-     ] 
+        "64f4472d535ded6b9d3225c9"
+       ] 
 }
