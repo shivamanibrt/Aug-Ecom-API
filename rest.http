@@ -9,14 +9,26 @@ POST http://localhost:8000/api/v1/admin-user
 Content-Type: application/json
 
 {
-    "fName":"Shivamani",
+    "fName":"Aayush",
     "lName":"Bartaula",
-    "email":"shivamani@email.com",
+    "email":"aayush@email.com",
     "password":"12345678",
     "phone":"0414449540",
     "address":"Sydney",
     "dob":"2022-02-20"
 }
+###login admin user
+POST http://localhost:8000/api/v1/admin-user/login
+Content-Type: application/json
+
+{
+   "email":"aayush@email.com",
+    "password":"12345678"
+}
+
+###Post new admin user
+PATCH  http://localhost:8000/api/v1/admin-user/verify-email
+
 
 ###Delete user
 DELETE http://localhost:8000/api/v1/admin-user
@@ -24,6 +36,6 @@ Content-Type: application/json
 
 {
      "ids":[
-        "64f4472d535ded6b9d3225c9"
+        "64f80b9ded51dcf8539d1152"
        ] 
 }

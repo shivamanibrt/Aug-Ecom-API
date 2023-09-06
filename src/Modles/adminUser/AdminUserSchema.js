@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const adminUserSchema = new mongoose.Schema({
+const AdminUserSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'inactive'
@@ -48,4 +48,4 @@ const adminUserSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-export default mongoose.model("Admin_user", adminUserSchema);
+export default mongoose.model("Admin_user", AdminUserSchema);

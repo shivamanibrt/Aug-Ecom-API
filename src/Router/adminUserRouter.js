@@ -1,10 +1,10 @@
 import express from 'express';
-import { deleteAdminUser, getAdminUSer, insertAdminUSer } from '../Modles/adminUser/AdminUserModal.js';
-import { hashPasswords } from '../Helper/bcryptHelper.js';
-import { newAdminUservalidation } from '../MiddleWares/Joy-Valication/adminUserValidation.js';
+import { deleteAdminUser, findOneAdminUSer, getAdminUSer, insertAdminUSer, updateOneAdminUser } from '../Modles/adminUser/AdminUserModal.js';
+import { comparePassword, hashPasswords } from '../Helper/bcryptHelper.js';
+import { emailVerificationValidation, loginValidation, newAdminUservalidation } from '../MiddleWares/Joy-Valication/adminUserValidation.js';
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
-import { verificationEmail } from '../Helper/emailHelper.js';
+import { userVerifiedNotification, verificationEmail } from '../Helper/emailHelper.js';
 
 
 //server side validation
@@ -37,7 +37,8 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
         if (user?._id) {
             res.json({
                 status: 'success',
-                message: 'we have sent you and email to verify your account please check your mailbox'
+                message: 'We have sent you and email to verify your account please check your mailbox',
+                user
             });
             const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?c=${user.emailValidationCode}&e=${user.email}`
             //send email
@@ -49,6 +50,7 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
             })
             return;
         }
+        // const url = http://localhost:3000/admin/verify-email?c=1e64fddf-788c-4c2e-830b-b74d5c21b32c&e=shivamani@email.com
         res.json({
             status: 'error',
             message: 'Unable to create new user'
@@ -61,6 +63,68 @@ router.post('/', newAdminUservalidation, async (req, res, next) => {
         next(error)
     }
 })
+
+router.post('/login', loginValidation, async (req, res, next) => {
+    try {
+        const { password, email } = req.body;
+
+        //find if user exist based in given email 
+        const user = await findOneAdminUSer({ email });
+
+        if (user?._id) {
+
+            if (user?.status !== 'active') {
+                return res.json({
+                    status: 'error',
+                    message: 'Verify user using email',
+                })
+            }
+            const isMatched = comparePassword(password, user.password);
+
+            if (isMatched) {
+                return res.json({
+                    status: 'success',
+                    message: 'Logged in successfully',
+                    user
+                })
+            }
+            return res.json({
+                status: 'error',
+                message: 'Invalid email or password',
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.patch('/verify-email', emailVerificationValidation, async (req, res, next) => {
+    try {
+        const { email, emailValidationCode } = req.body;
+        const user = await updateOneAdminUser(
+            {
+                email,
+                emailValidationCode
+            },
+            {
+                status: "active",
+                emailValidationCode: "",
+            }
+        );
+
+        user?._id ?
+            res.json({
+                status: 'success',
+                message: 'Your accound has been verified you may login',
+            }) && userVerifiedNotification(user) :
+            res.json({
+                status: 'error',
+                message: 'Account already verified, link expired.',
+            });
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 router.delete('/', async (req, res, next) => {
@@ -77,4 +141,4 @@ router.delete('/', async (req, res, next) => {
     }
 })
 
-export default router;
+export default router; 
