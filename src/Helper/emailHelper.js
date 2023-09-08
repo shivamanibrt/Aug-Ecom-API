@@ -48,7 +48,7 @@ export const userVerifiedNotification = (emailData) => {
         text: `Hi ${emailData.fName},\n\nYour account has been successfully verified. You may now log in to your account on ${process.env.ROOT_DOMAIN}.\n\nBest regards,\nShivamani Store`,
         html: `
             <p>Hi ${emailData.fName},</p>
-            <p>Your account has been successfully verified. You may now log in to your account now <a href="${process.env.ROOT_DOMAIN}">${process.env.ROOT_DOMAIN}"</a>.</p>
+            <p>Your account has been successfully verified. You may now log in to your account now <a href="${process.env.ROOT_DOMAIN}">${process.env.ROOT_DOMAIN}"</a></p>
             <br/>
             <p>Best regards,<br/>Shivamani Store</p>
         `

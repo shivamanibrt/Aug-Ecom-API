@@ -71,6 +71,13 @@ router.post('/login', loginValidation, async (req, res, next) => {
         //find if user exist based in given email 
         const user = await findOneAdminUSer({ email });
 
+        if (!user) {
+            return res.json({
+                status: 'error',
+                message: 'Account not found',
+            })
+        }
+
         if (user?._id) {
 
             if (user?.status !== 'active') {
