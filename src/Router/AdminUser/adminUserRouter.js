@@ -1,10 +1,11 @@
 import express from 'express';
-import { deleteAdminUser, findOneAdminUSer, getAdminUSer, insertAdminUSer, updateOneAdminUser } from '../Modles/adminUser/AdminUserModal.js';
-import { comparePassword, hashPasswords } from '../Helper/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUservalidation } from '../MiddleWares/Joy-Valication/adminUserValidation.js';
+import { deleteAdminUser, findOneAdminUSer, getAdminUSer, insertAdminUSer, updateOneAdminUser } from '../../Modles/adminUser/AdminUserModal.js';
+import { comparePassword, hashPasswords } from '../../Helper/bcryptHelper.js';
+import { emailVerificationValidation, loginValidation, newAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
-import { userVerifiedNotification, verificationEmail } from '../Helper/emailHelper.js';
+import { userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
+import { createJWTs } from '../../Helper/jwtHelper.js';
 
 
 //server side validation
@@ -79,7 +80,6 @@ router.post('/login', loginValidation, async (req, res, next) => {
         }
 
         if (user?._id) {
-
             if (user?.status !== 'active') {
                 return res.json({
                     status: 'error',
@@ -89,10 +89,13 @@ router.post('/login', loginValidation, async (req, res, next) => {
             const isMatched = comparePassword(password, user.password);
 
             if (isMatched) {
+                user.password = undefined;
+                const jwts = await createJWTs({ email })
                 return res.json({
                     status: 'success',
                     message: 'Logged in successfully',
-                    user
+                    user,
+                    ...jwts
                 })
             }
             return res.json({
@@ -126,7 +129,7 @@ router.patch('/verify-email', emailVerificationValidation, async (req, res, next
             }) && userVerifiedNotification(user) :
             res.json({
                 status: 'error',
-                message: 'Account already verified, link expired.',
+                message: 'Account verified.',
             });
     } catch (error) {
         next(error);

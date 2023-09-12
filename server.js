@@ -11,8 +11,10 @@ app.use(helmet());
 app.use(express.json());
 
 //api
-import adminUserRouter from './src/Router/adminUserRouter.js';
+import adminUserRouter from './src/Router/AdminUser/adminUserRouter.js';
 app.use('/api/v1/admin-user', adminUserRouter)
+import catagoryRouter from './src/Router/Catagory/catagoryRouter.js';
+app.use('/api/v1/catagory', catagoryRouter)
 
 //dbConnection
 import { dbConnect } from './src/Config/dbConfig.js';

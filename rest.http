@@ -37,6 +37,20 @@ Content-Type: application/json
 
 {
      "ids":[
-        "64f80b9ded51dcf8539d1152"
+        "64f80bda338510b8654505ec"
        ] 
+}
+
+# <--------------- CATAGORY ------------------->
+### Get the available category
+GET http://localhost:8000/api/v1/catagory
+
+### GET CATAGORY
+POST http://localhost:8000/api/v1/catagory
+Content-Type: application/json 
+
+{
+    "status":"active",
+    "name":"Electronic",
+    "parentId":""
 }
