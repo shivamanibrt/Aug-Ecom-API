@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { insertSesion } from '../Modles/Modals/SessionModel.js';
+import { deleteSession, insertSesion } from '../Modles/Modals/SessionModel.js';
 import { updateOneAdminUser } from '../Modles/adminUser/AdminUserModal.js';
 // import dotenv from 'dotenv';
 
@@ -31,4 +31,23 @@ export const createJWTs = async (payload) => {
         accessJWT: await signAssessJWT(payload),
         refreshJWT: await signRefreshJWT(payload)
     }
+}
+
+export const verifyAccessJWT = token => {
+    try {
+        return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+    } catch (error) {
+        if (error?.message === 'jwt expired!') {
+            //delete jwt from session table 
+            deleteSession({
+                type: 'jwt',
+                token
+            })
+        }
+        return error?.message
+    }
+}
+
+export const verifyRefreshJWT = (token) => {
+    return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
 }

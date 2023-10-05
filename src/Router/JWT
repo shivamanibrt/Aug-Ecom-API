@@ -1,3 +1,4 @@
+Step 1: 
 1. Send the login info to the login api
 2. if login success, create JWT
     a AccessJWS, store in the session table 
@@ -6,3 +7,18 @@
 4. Store token int ht browser session
     a. accessJWT goes in the seession storage
     b. refresh JWT gors in the local storage
+
+
+Step 2:
+1. receve accessJWT as a authorizatoion header
+2. verify if accessJWT is valid
+3. verify if accessJWT exist in the session table
+4. then, get the user info by email which is available through jwt decode
+5. do next()
+6. if any of the step fails above, return unauthorization error message 
+
+
+Step 3: Frontend auto login: 
+Case 1: When you are refreshing the same window
+Case 2: When you open link to new tab or come back to re-visit the site 
+

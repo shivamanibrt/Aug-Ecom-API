@@ -3,6 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 const app = express();
 
+
 const PORT = process.env.PORT || 8000;
 
 //middleware
@@ -11,10 +12,12 @@ app.use(helmet());
 app.use(express.json());
 
 //api
-import adminUserRouter from './src/Router/AdminUser/adminUserRouter.js';
-app.use('/api/v1/admin-user', adminUserRouter)
+import { adminAuth } from './src/MiddleWares/Joy-Valication/AuthMiddleware/authMiddleware.js';
 import catagoryRouter from './src/Router/Catagory/catagoryRouter.js';
-app.use('/api/v1/catagory', catagoryRouter)
+import adminUserRouter from './src/Router/AdminUser/adminUserRouter.js';
+
+app.use('/api/v1/admin-user', adminUserRouter)
+app.use('/api/v1/catagory', adminAuth, catagoryRouter)
 
 //dbConnection
 import { dbConnect } from './src/Config/dbConfig.js';

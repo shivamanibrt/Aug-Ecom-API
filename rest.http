@@ -4,6 +4,10 @@ Get http://localhost:8000/api/v1
 ###Get admin user
 GET http://localhost:8000/api/v1/admin-user
 
+### get new accessJWT
+GET http://localhost:8000/api/v1/admin-user/accessjwt 
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFheXVzaEBlbWFpbC5jb20iLCJpYXQiOjE2OTYwMzgxMjAsImV4cCI6MTY5ODYzMDEyMH0.C5-cms1rfHbAQRs9TCJPOHSD991JVmdhuUEHqIDJhjw
+
 ###Post new admin user
 POST http://localhost:8000/api/v1/admin-user
 Content-Type: application/json
@@ -41,9 +45,16 @@ Content-Type: application/json
        ] 
 }
 
-# <--------------- CATAGORY ------------------->
+### <---------------------------------->
+### <--------- CATAGORY --------------->
+### <---------------------------------->
+
 ### Get the available category
 GET http://localhost:8000/api/v1/catagory
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFheXVzaEBlbWFpbC5jb20iLCJpYXQiOjE2OTYwMzgxMjAsImV4cCI6MTY5NjAzOTAyMH0.fgbzwkOe-g90k8TSVMuiCslXPW1BUsAouRd6xHRH3X4
+### Get by Id available category
+GET http://localhost:8000/api/v1/catagory
+
 
 ### GET CATAGORY
 POST http://localhost:8000/api/v1/catagory
@@ -51,6 +62,24 @@ Content-Type: application/json
 
 {
     "status":"active",
-    "name":"Electronic",
+    "name":"Laptop",
     "parentId":""
 }
+
+### delete CATAGORY
+DELETE http://localhost:8000/api/v1/catagory
+Content-Type: application/json 
+
+{
+     "ids":[
+             "6502c64fc8038573e5525273"
+            ] 
+}
+
+
+### <---------------------------------->
+### <--------- Payment --------------->
+### <---------------------------------->
+
+###get payment
+Get http://localhost:8000/api/v1/paymentMethodRouter

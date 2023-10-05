@@ -5,8 +5,8 @@ import { emailVerificationValidation, loginValidation, newAdminUservalidation } 
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
 import { userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
-import { createJWTs } from '../../Helper/jwtHelper.js';
-
+import { createJWTs, signAssessJWT, verifyRefreshJWT } from '../../Helper/jwtHelper.js';
+import { adminAuth } from '../../MiddleWares/Joy-Valication/AuthMiddleware/authMiddleware.js';
 
 //server side validation
 //encrypt user password
@@ -14,21 +14,21 @@ import { createJWTs } from '../../Helper/jwtHelper.js';
 //create unique verification code
 //create a link pointing to our front end wih the email and verification cdoe and send to their email
 
-router.get('/:_id?', async (req, res, next) => {
-    const { _id } = req.params;
-    const result = await getAdminUSer(_id)
+router.get('/', adminAuth, async (req, res, next) => {
     try {
+        const user = req.adminInfo;
+        console.log(user)
         res.json({
             status: 'success',
             message: 'return from get method',
-            result
+            user
         })
     } catch (error) {
         next(error)
     }
 })
 
-router.post('/', newAdminUservalidation, async (req, res, next) => {
+router.post('/', adminAuth, newAdminUservalidation, async (req, res, next) => {
     try {
         const { password } = req.body;
         req.body.password = hashPasswords(password);
@@ -121,7 +121,6 @@ router.patch('/verify-email', emailVerificationValidation, async (req, res, next
                 emailValidationCode: "",
             }
         );
-
         user?._id ?
             res.json({
                 status: 'success',
@@ -136,7 +135,6 @@ router.patch('/verify-email', emailVerificationValidation, async (req, res, next
     }
 });
 
-
 router.delete('/', async (req, res, next) => {
     const { ids } = req.body;
     const result = await deleteAdminUser(ids)
@@ -148,6 +146,35 @@ router.delete('/', async (req, res, next) => {
         })
     } catch (error) {
         next(error)
+    }
+})
+
+//generate new accessJWT and send back to the client
+router.get('/accessjwt', async (req, res, next) => {
+    try {
+        const { authorization } = req.headers;
+        if (authorization) {
+            //verif the token
+            const decoded = verifyRefreshJWT(authorization)
+            if (decoded.email) {
+                const user = await findOneAdminUSer({ email: decoded.email })
+                //check if exist in db
+                if (user?._id) {
+                    //creat new accessjwt and return
+                    return res.json({
+                        statu: 'success',
+                        accessJWT: await signAssessJWT({ email: decoded.email })
+                    })
+                }
+            }
+        }
+        res.status(401).json({
+            status: 'error',
+            message: 'Unauthenticated'
+        });
+    } catch (error) {
+        error.status = 401
+        next(error);
     }
 })
 
