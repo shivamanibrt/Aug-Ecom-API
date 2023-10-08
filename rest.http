@@ -82,4 +82,33 @@ Content-Type: application/json
 ### <---------------------------------->
 
 ###get payment
-Get http://localhost:8000/api/v1/paymentMethodRouter
+GET http://localhost:8000/api/v1/paymentMethod
+
+
+###get payment
+POST http://localhost:8000/api/v1/paymentMethod
+Content-Type: application/json
+
+{
+    "status":"inactive",
+    "name":"Apple Pay",
+    "description":"Follow the instruction to add apple pay"
+}
+
+###update payment and its description
+PUT http://localhost:8000/api/v1/paymentMethod
+Content-Type: application/json
+
+{
+    "_id":"651f54739100700e64ef737f",
+    "status":"active",
+    "name":"Pay by credit card",
+    "description":"Follow the instruction because Amex is not accepted"
+}
+###delete payment 
+DELETE http://localhost:8000/api/v1/paymentMethod
+Content-Type: application/json
+
+{
+    "_id":"651f5abd85fc523e4cfccaa9"
+}

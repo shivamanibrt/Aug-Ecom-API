@@ -17,7 +17,6 @@ import { adminAuth } from '../../MiddleWares/Joy-Valication/AuthMiddleware/authM
 router.get('/', adminAuth, async (req, res, next) => {
     try {
         const user = req.adminInfo;
-        console.log(user)
         res.json({
             status: 'success',
             message: 'return from get method',
