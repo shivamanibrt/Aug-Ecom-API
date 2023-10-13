@@ -52,9 +52,6 @@ Content-Type: application/json
 ### Get the available category
 GET http://localhost:8000/api/v1/catagory
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFheXVzaEBlbWFpbC5jb20iLCJpYXQiOjE2OTYwMzgxMjAsImV4cCI6MTY5NjAzOTAyMH0.fgbzwkOe-g90k8TSVMuiCslXPW1BUsAouRd6xHRH3X4
-### Get by Id available category
-GET http://localhost:8000/api/v1/catagory
-
 
 ### GET CATAGORY
 POST http://localhost:8000/api/v1/catagory
@@ -85,7 +82,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/v1/paymentMethod
 
 
-###get payment
+###post payment
 POST http://localhost:8000/api/v1/paymentMethod
 Content-Type: application/json
 
@@ -110,5 +107,5 @@ DELETE http://localhost:8000/api/v1/paymentMethod
 Content-Type: application/json
 
 {
-    "_id":"651f5abd85fc523e4cfccaa9"
+    "_id":"6523c592486974b20a5e0ce0"
 }

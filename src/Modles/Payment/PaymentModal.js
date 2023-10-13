@@ -12,6 +12,6 @@ export const updatePaymentMethodById = ({ _id, ...update }) => {
     return PaymentMethodSchema.findByIdAndUpdate(_id, update)
 }
 
-export const deletePaymentMethodById = (_id) => {
-    return PaymentMethodSchema.findByIdAndDelete(_id)
+export const deletePaymentMethodById = (filter) => {
+    return PaymentMethodSchema.findOneAndDelete(filter)
 }

@@ -64,7 +64,8 @@ router.put('/', updatePaymentMethodValidation, async (req, res, next) => {
 router.delete('/', async (req, res, next) => {
     try {
         const { _id } = req.body;
-        const result = await deletePaymentMethodById(_id)
+        console.log(_id)
+        const result = await deletePaymentMethodById(_id);
 
         result?._id ?
             res.json({

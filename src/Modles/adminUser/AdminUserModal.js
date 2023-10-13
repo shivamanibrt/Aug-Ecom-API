@@ -16,6 +16,7 @@ export const findOneAdminUSer = (filter) => {
 export const updateOneAdminUser = (filter, update) => {
     return AdminUserSchema.findOneAndUpdate(filter, update, { new: true });
 }
+
 //Delete
 export const deleteAdminUser = (ids) => {
     return AdminUserSchema.deleteMany({ "_id": { $in: ids } })
