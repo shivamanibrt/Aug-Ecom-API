@@ -70,3 +70,15 @@ export const updatePaymentMethodValidation = (req, res, next) => {
     })
     validator(schema, req, res, next);
 }
+export const productValidation = (req, res, next) => {
+    const schema = Joi.object({
+        "name": "Mackbook",
+        "sku": "mac_14",
+        "description": "Mac intel chip",
+        "Qty": 100,
+        "price": 2000,
+        "salesPrice": 0,
+        "salesStartDate": null,
+        "salesEndDate": null
+    })
+}

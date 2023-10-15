@@ -1,7 +1,7 @@
 import express from 'express';
 import { newPaymentMethodValidation, updatePaymentMethodValidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
 import { deletePaymentMethodById, getPaymentMethods, insertPaymentMethod, updatePaymentMethodById } from '../../Modles/Payment/PaymentModal.js';
-import PaymentMethodSchema from '../../Modles/Payment/PaymentMethodSchema.js';
+// import PaymentMethodSchema from '../../Modles/Payment/PaymentMethodSchema.js';
 
 const router = express.Router();
 

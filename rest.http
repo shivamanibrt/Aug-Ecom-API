@@ -109,3 +109,24 @@ Content-Type: application/json
 {
     "_id":"6523c592486974b20a5e0ce0"
 }
+
+### <---------------------------------->
+### <---------  PRODUCT  -------------->
+### <---------------------------------->
+###get product
+GET http://localhost:8000/api/v1/product
+
+###post product
+POST  http://localhost:8000/api/v1/product
+Content-Type: application/json
+
+{
+    "name":"Mackbook",
+    "sku":"mac_14",
+    "description":"Mac intel chip",
+    "Qty":100,
+    "price":2000,
+    "salesPrice":0,
+    "salesStartDate":null,
+    "salesEndDate":null
+}

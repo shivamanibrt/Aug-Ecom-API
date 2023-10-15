@@ -16,10 +16,14 @@ import { adminAuth } from './src/MiddleWares/Joy-Valication/AuthMiddleware/authM
 import catagoryRouter from './src/Router/Catagory/catagoryRouter.js';
 import adminUserRouter from './src/Router/AdminUser/adminUserRouter.js';
 import paymentMethodRouter from './src/Router/PaymentMethod/paymentMethodRouter.js';
+import productRouter from './src/Router/Product/productRouter.js'
+
 
 app.use('/api/v1/admin-user', adminUserRouter)
 app.use('/api/v1/catagory', adminAuth, catagoryRouter)
 app.use('/api/v1/paymentMethod', paymentMethodRouter)
+app.use('/api/v1/product', productRouter)
+
 
 //dbConnection
 import { dbConnect } from './src/Config/dbConfig.js';
