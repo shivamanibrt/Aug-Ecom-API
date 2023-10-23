@@ -18,7 +18,6 @@ import adminUserRouter from './src/Router/AdminUser/adminUserRouter.js';
 import paymentMethodRouter from './src/Router/PaymentMethod/paymentMethodRouter.js';
 import productRouter from './src/Router/Product/productRouter.js'
 
-
 app.use('/api/v1/admin-user', adminUserRouter)
 app.use('/api/v1/catagory', adminAuth, catagoryRouter)
 app.use('/api/v1/paymentMethod', paymentMethodRouter)
@@ -53,6 +52,7 @@ app.use((error, req, res, next) => {
         next(error);
     }
 });
+
 
 app.listen(PORT, error => {
     error && console.log(error);
