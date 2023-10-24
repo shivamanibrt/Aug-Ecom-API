@@ -1,5 +1,4 @@
-import ProductModalSchema from "./ProductModalSchema";
-
+import ProductModalSchema from "./ProductModalSchema.js";
 
 export const createProduct = (obj) => {
     return ProductModalSchema(obj).save()

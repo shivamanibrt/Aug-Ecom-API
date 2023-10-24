@@ -1,17 +1,21 @@
 import express from "express";
+import { getAllProducts } from "../../Modles/Product/productModal.js";
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
+        const products = await getAllProducts();
         res.json({
             status: 'success',
-            message: 'You reached to payment GET method'
+            message: 'Product GET method',
+            products
         })
 
     } catch (error) {
         next(error)
     }
 })
+
 router.post('/', (req, res, next) => {
     try {
         const result = req.body
@@ -25,4 +29,4 @@ router.post('/', (req, res, next) => {
     }
 })
 
-export default router
+export default router;
