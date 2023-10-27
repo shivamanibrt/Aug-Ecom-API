@@ -13,7 +13,7 @@ export const SHORTSTR = Joi.string().max(50)
 export const LONGSTR = Joi.string().max(500)
 
 export const EMAILVALIDATIONCODE = Joi.string().max(100).required()
-
+export const NUMBER = Joi.number()
 
 export const validator = (schema, req, res, next) => {
     const { error } = schema.validate(req.body)

@@ -36,7 +36,7 @@ router.post('/', newCategoryValidation, async (req, res, next) => {
             message: 'unable to add the catageroy'
         })
     } catch (error) {
-        if (error.message.includes("E1100")) {
+        if (error.message.includes("E11000")) {
             error.status = 200;
             error.message = 'Category already Exist'
         }
