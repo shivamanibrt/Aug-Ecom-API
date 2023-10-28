@@ -121,8 +121,8 @@ POST  http://localhost:8000/api/v1/product
 Content-Type: application/json
 
 {
-    "name":"qckbook",
-    "sku":"mac_14",
+    "name":"Sqckbook",
+    "sku":"macs_14",
     "description":"Mac intel chip",
     "qty":100,
     "price":2000,

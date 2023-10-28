@@ -4,7 +4,6 @@ import { productValidation } from "../../MiddleWares/Joy-Valication/joiValidatio
 const router = express.Router();
 import slugify from 'slugify';
 
-
 router.get('/', async (req, res, next) => {
     try {
         const products = await getAllProducts();
