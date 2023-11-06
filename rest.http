@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ### Get the available category
 GET http://localhost:8000/api/v1/catagory
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFheXVzaEBlbWFpbC5jb20iLCJpYXQiOjE2OTYwMzgxMjAsImV4cCI6MTY5NjAzOTAyMH0.fgbzwkOe-g90k8TSVMuiCslXPW1BUsAouRd6xHRH3X4
+
 
 ### GET CATAGORY
 POST http://localhost:8000/api/v1/catagory

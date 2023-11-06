@@ -19,10 +19,9 @@ import paymentMethodRouter from './src/Router/PaymentMethod/paymentMethodRouter.
 import productsRouter from './src/Router/Product/productsRouter.js'
 
 app.use('/api/v1/admin-user', adminUserRouter)
-app.use('/api/v1/catagory', adminAuth, catagoryRouter)
+app.use('/api/v1/catagory', catagoryRouter)
 app.use('/api/v1/paymentMethod', paymentMethodRouter)
 app.use('/api/v1/product', productsRouter)
-
 
 //dbConnection
 import { dbConnect } from './src/Config/dbConfig.js';

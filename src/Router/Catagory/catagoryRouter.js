@@ -4,7 +4,7 @@ import { newCategoryValidation, updateCategoryValidation } from '../../MiddleWar
 const router = express.Router();
 import slufigy from 'slugify'
 
-//get the available catagory
+
 router.get('/:_id?', async (req, res, next) => {
     try {
         const { _id } = req.params;
@@ -19,7 +19,6 @@ router.get('/:_id?', async (req, res, next) => {
     }
 })
 
-//insert new catagory
 router.post('/', newCategoryValidation, async (req, res, next) => {
     try {
         req.body.slug = slufigy(req.body.name, {
@@ -35,6 +34,7 @@ router.post('/', newCategoryValidation, async (req, res, next) => {
             status: 'error',
             message: 'unable to add the catageroy'
         })
+
     } catch (error) {
         if (error.message.includes("E11000")) {
             error.status = 200;
