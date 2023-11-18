@@ -72,6 +72,7 @@ export const updatePaymentMethodValidation = (req, res, next) => {
 }
 export const productValidation = (req, res, next) => {
     const schema = Joi.object({
+        status: STATUS.required(),
         name: SHORTSTR.required(),
         sku: SHORTSTR.required(),
         description: LONGSTR.required(),

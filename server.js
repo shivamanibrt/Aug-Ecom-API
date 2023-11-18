@@ -3,7 +3,6 @@ import cors from 'cors'
 import helmet from 'helmet'
 const app = express();
 
-
 const PORT = process.env.PORT || 8000;
 
 //middleware

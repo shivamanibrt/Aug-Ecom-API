@@ -3,6 +3,26 @@ import { createProduct, getAllProducts } from "../../Modles/Product/productModal
 import { productValidation } from "../../MiddleWares/Joy-Valication/joiValidation.js";
 const router = express.Router();
 import slugify from 'slugify';
+import multer from 'multer';
+
+//set up multer for validation and upload destination
+const filesUploadDestination = '/imageFolder'
+
+const storage = multer.diskStorage({
+    destination: (req, files, cb) => {
+        let error = null;
+        console.log(req.files)
+        console.log(files)
+        cb(error, filesUploadDestination);
+    },
+    filename: (req, file, cb) => {
+        const fullFileName = Date.now() + '-' + file.originalname;
+        cb(null, fullFileName);
+    }
+});
+
+const upload = multer({ storage });
+
 
 router.get('/', async (req, res, next) => {
     try {
@@ -17,14 +37,15 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/', productValidation, async (req, res, next) => {
+router.post('/', upload.array('images', 5), productValidation, async (req, res, next) => {
+    console.log('Request Files:', req.files);
     try {
         req.body.slug = slugify(req.body.name, { lower: true, trim: true })
         const result = await createProduct(req.body);
         result?._id ?
             res.json({
                 status: 'success',
-                message: 'Product POST method',
+                message: 'Product added succesfully',
                 result
             }) :
             res.json({
