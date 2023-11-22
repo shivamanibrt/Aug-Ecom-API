@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 const app = express();
+import path from 'path'
 
 const PORT = process.env.PORT || 8000;
 
@@ -9,6 +10,10 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+
+//serve static content
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'public/img')))
 
 //api
 import { adminAuth } from './src/MiddleWares/Joy-Valication/AuthMiddleware/authMiddleware.js';

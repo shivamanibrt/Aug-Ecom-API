@@ -6,13 +6,11 @@ import slugify from 'slugify';
 import multer from 'multer';
 
 //set up multer for validation and upload destination
-const filesUploadDestination = '/imageFolder'
+const filesUploadDestination = 'public/img'
 
 const storage = multer.diskStorage({
     destination: (req, files, cb) => {
         let error = null;
-        console.log(req.files)
-        console.log(files)
         cb(error, filesUploadDestination);
     },
     filename: (req, file, cb) => {
@@ -38,8 +36,16 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', upload.array('images', 5), productValidation, async (req, res, next) => {
-    console.log('Request Files:', req.files);
     try {
+        const files = req.files;
+        console.log(files)
+        if (files.length) {
+            const images = files.map(img => img.path.slice(7));
+            console.log(images)
+            req.body.images = images;
+            req.body.thumbnail = images[0]
+        }
+
         req.body.slug = slugify(req.body.name, { lower: true, trim: true })
         const result = await createProduct(req.body);
         result?._id ?
