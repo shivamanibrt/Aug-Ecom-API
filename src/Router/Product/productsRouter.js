@@ -43,6 +43,7 @@ router.post('/', upload.array('images', 5), productValidation, async (req, res, 
             const images = files.map(img => img.path.slice(7));
             console.log(images)
             req.body.images = images;
+            //gives firs image as thumnail
             req.body.thumbnail = images[0]
         }
 
