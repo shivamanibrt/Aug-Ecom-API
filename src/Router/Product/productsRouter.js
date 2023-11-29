@@ -1,5 +1,5 @@
 import express from "express";
-import { createProduct, getAllProducts } from "../../Modles/Product/productModal.js";
+import { createProduct, getAllProducts, getProductsByID } from "../../Modles/Product/productModal.js";
 import { productValidation } from "../../MiddleWares/Joy-Valication/joiValidation.js";
 const router = express.Router();
 import slugify from 'slugify';
@@ -11,6 +11,9 @@ const filesUploadDestination = 'public/img'
 const storage = multer.diskStorage({
     destination: (req, files, cb) => {
         let error = null;
+        //valudation test if needed....
+
+        //error and callback
         cb(error, filesUploadDestination);
     },
     filename: (req, file, cb) => {
@@ -21,10 +24,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
-router.get('/', async (req, res, next) => {
+router.get('/:_id?', async (req, res, next) => {
     try {
-        const products = await getAllProducts();
+        const { _id } = req.params
+        const products = _id ? await getProductsByID(_id) : await getAllProducts();
         res.json({
             status: 'success',
             message: 'Product GET method',
@@ -38,13 +41,13 @@ router.get('/', async (req, res, next) => {
 router.post('/', upload.array('images', 5), productValidation, async (req, res, next) => {
     try {
         const files = req.files;
-        console.log(files)
+
         if (files.length) {
-            const images = files.map(img => img.path.slice(7));
-            console.log(images)
+            const images = files.map(img => img.path.slice(6));
             req.body.images = images;
             //gives firs image as thumnail
             req.body.thumbnail = images[0]
+            console.log(images)
         }
 
         req.body.slug = slugify(req.body.name, { lower: true, trim: true })
@@ -65,6 +68,17 @@ router.post('/', upload.array('images', 5), productValidation, async (req, res, 
             error.status = 200;
             error.message = 'Products already Exist'
         }
+        next(error)
+    }
+})
+
+router.delete('/:_id', (req, res, next) => {
+    try {
+        //deleting img from disk, not recommended in the production
+        const { _id } = req.params
+        const imgToDelete = req.body;
+        console.log(_id, imgToDelete)
+    } catch (error) {
         next(error)
     }
 })

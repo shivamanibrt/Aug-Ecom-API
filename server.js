@@ -13,7 +13,7 @@ app.use(express.json());
 
 //serve static content
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'public/img')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 //api
 import { adminAuth } from './src/MiddleWares/Joy-Valication/AuthMiddleware/authMiddleware.js';

@@ -8,6 +8,9 @@ export const getAllProducts = () => {
     return ProductModalSchema.find()
 }
 
+export const getProductsByID = (filter) => {
+    return ProductModalSchema.findById(filter)
+}
 export const getSelectedProducts = (filter) => {
     return ProductModalSchema.find(filter)
 }
@@ -18,4 +21,7 @@ export const updateProductById = ({ _id, ...rest }) => {
 
 export const deleteProductByID = (_id) => {
     return ProductModalSchema.findByIdAndDelete(_id)
+}
+export const deleteManyProductByID = (ids) => {
+    return ProductModalSchema.deleteMany({ "_id": { $in: ids } })
 }
