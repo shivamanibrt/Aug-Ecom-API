@@ -48,7 +48,6 @@ router.post('/', upload.array('images', 5), productValidation, async (req, res, 
             req.body.images = images;
             //gives firs image as thumnail
             req.body.thumbnail = images[0]
-            console.log(images)
         }
 
         req.body.slug = slugify(req.body.name, { lower: true, trim: true })
