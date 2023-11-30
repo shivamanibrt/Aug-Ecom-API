@@ -1,9 +1,10 @@
 import express from "express";
-import { createProduct, getAllProducts, getProductsByID } from "../../Modles/Product/productModal.js";
+import { createProduct, deleteProductByID, getAllProducts, getProductsByID } from "../../Modles/Product/productModal.js";
 import { productValidation } from "../../MiddleWares/Joy-Valication/joiValidation.js";
 const router = express.Router();
 import slugify from 'slugify';
 import multer from 'multer';
+import fs from 'fs';
 
 //set up multer for validation and upload destination
 const filesUploadDestination = 'public/img'
@@ -72,12 +73,27 @@ router.post('/', upload.array('images', 5), productValidation, async (req, res, 
     }
 })
 
-router.delete('/:_id', (req, res, next) => {
+router.delete('/:_id', async (req, res, next) => {
     try {
-        //deleting img from disk, not recommended in the production
         const { _id } = req.params
+
         const imgToDelete = req.body;
-        console.log(_id, imgToDelete)
+        //deleting img from disk, not recommended in the production
+        if (imgToDelete.length) {
+            // fs.unlinkSync('path to image')
+            imgToDelete.map(item => item && fs.unlinkSync('./public/' + item))
+        }
+        //delete item from database
+        const product = await deleteProductByID(_id);
+
+        product?._id ? res.json({
+            status: 'success',
+            message: 'Product successfuly deletetd'
+        }) : res.json({
+            status: 'success',
+            message: 'Product successfuly deletetd'
+        })
+
     } catch (error) {
         next(error)
     }
