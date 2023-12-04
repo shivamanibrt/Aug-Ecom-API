@@ -1,5 +1,5 @@
 import express from "express";
-import { createProduct, deleteProductByID, getAllProducts, getProductsByID } from "../../Modles/Product/productModal.js";
+import { createProduct, deleteProductByID, getAllProducts, getProductsByID, updateProductById } from "../../Modles/Product/productModal.js";
 import { productValidation } from "../../MiddleWares/Joy-Valication/joiValidation.js";
 const router = express.Router();
 import slugify from 'slugify';
@@ -72,6 +72,36 @@ router.post('/', upload.array('images', 5), productValidation, async (req, res, 
     }
 })
 
+router.put('/', upload.array("newImages", 5), async (req, res, next) => {
+    try {
+        const { files, body } = req
+        let { images, imgToDelete } = req.body
+        images = images.split(',')
+
+        const imgAfterFilter = images.filter((img) => !imgToDelete.includes(img))
+
+        if (files) {
+            const newImgs = files.map(imgObj => imgObj.path.slice(6));
+            images = [...imgAfterFilter, ...newImgs];
+        }
+
+        body.images = body;
+        const product = await updateProductById(body);
+
+        product?._id ?
+            res.json({
+                status: "success",
+                message: 'update product'
+            }) : res.json({
+                status: "error",
+                message: 'unable to updade product'
+            })
+    } catch (error) {
+        error.status = 500;
+        next(error)
+    }
+})
+
 router.delete('/:_id', async (req, res, next) => {
     try {
         const { _id } = req.params
@@ -97,5 +127,6 @@ router.delete('/:_id', async (req, res, next) => {
         next(error)
     }
 })
+
 
 export default router;
