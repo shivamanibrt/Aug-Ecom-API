@@ -1,6 +1,6 @@
 import express from "express";
 import { createProduct, deleteProductByID, getAllProducts, getProductsByID, updateProductById } from "../../Modles/Product/productModal.js";
-import { productValidation } from "../../MiddleWares/Joy-Valication/joiValidation.js";
+import { productValidation, updateProductValidation } from "../../MiddleWares/Joy-Valication/joiValidation.js";
 const router = express.Router();
 import slugify from 'slugify';
 import multer from 'multer';
@@ -72,20 +72,20 @@ router.post('/', upload.array('images', 5), productValidation, async (req, res, 
     }
 })
 
-router.put('/', upload.array("newImages", 5), async (req, res, next) => {
+router.put('/', upload.array("newImages", 5), updateProductValidation, async (req, res, next) => {
     try {
         const { files, body } = req
-        let { images, imgToDelete } = req.body
+        let { images, imgToDelete } = body
         images = images.split(',')
 
-        const imgAfterFilter = images.filter((img) => !imgToDelete.includes(img))
+        images = images.filter((img) => !imgToDelete.includes(img))
 
         if (files) {
-            const newImgs = files.map(imgObj => imgObj.path.slice(6));
-            images = [...imgAfterFilter, ...newImgs];
+            const newImgs = files.map((imgObj) => imgObj.path.slice(6));
+            images = [...images, ...newImgs];
         }
 
-        body.images = body;
+        body.images = images;
         const product = await updateProductById(body);
 
         product?._id ?

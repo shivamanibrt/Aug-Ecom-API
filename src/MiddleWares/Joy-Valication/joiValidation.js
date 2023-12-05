@@ -61,6 +61,7 @@ export const newPaymentMethodValidation = (req, res, next) => {
     })
     validator(schema, req, res, next);
 }
+
 export const updatePaymentMethodValidation = (req, res, next) => {
     const schema = Joi.object({
         _id: SHORTSTR.required(),
@@ -70,6 +71,7 @@ export const updatePaymentMethodValidation = (req, res, next) => {
     })
     validator(schema, req, res, next);
 }
+
 export const productValidation = (req, res, next) => {
     const { salesPrice, salesStartDate, salesEndDate } = req.body;
 
@@ -88,6 +90,31 @@ export const productValidation = (req, res, next) => {
         salesStartDate: DATE.allow(null),
         salesEndDate: DATE.allow(null),
         catId: SHORTSTR.required(),
+    })
+    validator(schema, req, res, next);
+}
+
+export const updateProductValidation = (req, res, next) => {
+    const { salesPrice, salesStartDate, salesEndDate } = req.body;
+
+    req.body.salesPrice = salesPrice ? salesPrice : 0;
+    req.body.salesStartDate = !salesStartDate || salesStartDate === 'null' ? null : salesStartDate;
+    req.body.salesEndDate = !salesEndDate || salesEndDate === 'null' ? null : salesEndDate;
+
+    const schema = Joi.object({
+        _id: SHORTSTR.required(),
+        status: STATUS.required(),
+        name: SHORTSTR.required(),
+        description: LONGSTR.required(),
+        qty: NUMBER.required(),
+        price: NUMBER.required(),
+        salesPrice: NUMBER.required(),
+        salesStartDate: DATE.allow(null),
+        salesEndDate: DATE.allow(null),
+        catId: SHORTSTR.required(),
+        images: LONGSTR.required(),
+        thumbnail: LONGSTR.required(),
+        imgToDelete: LONGSTR.allow(""),
     })
     validator(schema, req, res, next);
 }
