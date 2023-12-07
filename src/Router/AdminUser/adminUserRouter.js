@@ -1,7 +1,7 @@
 import express from 'express';
 import { deleteAdminUser, findOneAdminUSer, getAdminUSer, insertAdminUSer, updateOneAdminUser } from '../../Modles/adminUser/AdminUserModal.js';
 import { comparePassword, hashPasswords } from '../../Helper/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUservalidation, updateAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
 import { userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
@@ -63,6 +63,28 @@ router.post('/', adminAuth, newAdminUservalidation, async (req, res, next) => {
         next(error)
     }
 })
+
+router.put('/', updateAdminUservalidation, async (req, res, next) => {
+    try {
+        const { _id, ...rest } = req.body
+        const result = await updateOneAdminUser({ _id }, rest);
+
+        result?._id ? res.json({
+            status: 'success',
+            message: 'User Profile has been updated succesfully',
+            result
+        }) : res.json({
+            status: 'error',
+            message: 'Sorry User Profile not able to updated succesfully',
+            result
+        })
+    } catch (error) {
+        console.log('Admin user Router : ', error)
+        next(error)
+    }
+})
+
+//public router
 
 router.post('/login', loginValidation, async (req, res, next) => {
     try {

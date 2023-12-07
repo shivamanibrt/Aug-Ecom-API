@@ -12,6 +12,7 @@ export const getAdminUSer = () => {
 export const findOneAdminUSer = (filter) => {
     return AdminUserSchema.findOne(filter);
 }
+
 //Update
 export const updateOneAdminUser = (filter, update) => {
     return AdminUserSchema.findOneAndUpdate(filter, update, { new: true });
