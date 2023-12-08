@@ -1,6 +1,22 @@
 import Joi from "joi";
 import { ADDRESS, DATE, EMAIL, EMAILVALIDATIONCODE, FNAME, LNAME, LONGSTR, NUMBER, PASSWORD, PHONE, SHORTSTR, STATUS, validator } from "./constant.js";
 
+
+export const newAdminUservalidation = (req, res, next) => {
+    //define rules 
+    const schema = Joi.object({
+        fName: FNAME,
+        lName: LNAME,
+        email: EMAIL,
+        password: PASSWORD,
+        phone: PHONE,
+        address: ADDRESS,
+        dob: DATE,
+    })
+    //give rules to the data
+    validator(schema, req, res, next);
+}
+
 export const updateAdminUservalidation = (req, res, next) => {
     //define rules 
     const schema = Joi.object({
@@ -14,17 +30,12 @@ export const updateAdminUservalidation = (req, res, next) => {
     //give rules to the data
     validator(schema, req, res, next);
 }
-
-export const newAdminUservalidation = (req, res, next) => {
+export const updateAdinPasswordaValidation = (req, res, next) => {
     //define rules 
     const schema = Joi.object({
-        fName: FNAME,
-        lName: LNAME,
-        email: EMAIL,
-        password: PASSWORD,
-        phone: PHONE,
-        address: ADDRESS,
-        dob: DATE,
+        _id: SHORTSTR.required(),
+        password: SHORTSTR.required(),
+        newPassword: SHORTSTR.required()
     })
     //give rules to the data
     validator(schema, req, res, next);

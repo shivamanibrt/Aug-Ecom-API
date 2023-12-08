@@ -1,7 +1,7 @@
 import express from 'express';
 import { deleteAdminUser, findOneAdminUSer, getAdminUSer, insertAdminUSer, updateOneAdminUser } from '../../Modles/adminUser/AdminUserModal.js';
 import { comparePassword, hashPasswords } from '../../Helper/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUservalidation, updateAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUservalidation, updateAdinPasswordaValidation, updateAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
 import { userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
@@ -17,6 +17,9 @@ import { adminAuth } from '../../MiddleWares/Joy-Valication/AuthMiddleware/authM
 router.get('/', adminAuth, async (req, res, next) => {
     try {
         const user = req.adminInfo;
+        console.log(user);
+        user.password = undefined;
+        user.refreshJWT = undefined;
         res.json({
             status: 'success',
             message: 'return from get method',
@@ -84,6 +87,14 @@ router.put('/', updateAdminUservalidation, async (req, res, next) => {
     }
 })
 
+router.patch('/', adminAuth, updateAdinPasswordaValidation, (req, res, next) => {
+    try {
+        console.log(req.body);
+
+    } catch (error) {
+        next(error)
+    }
+})
 //public router
 
 router.post('/login', loginValidation, async (req, res, next) => {
