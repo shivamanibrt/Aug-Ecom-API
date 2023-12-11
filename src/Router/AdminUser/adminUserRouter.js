@@ -4,9 +4,11 @@ import { comparePassword, hashPasswords } from '../../Helper/bcryptHelper.js';
 import { emailVerificationValidation, loginValidation, newAdminUservalidation, updateAdinPasswordaValidation, updateAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
-import { userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
+import { otpNotification, userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
 import { createJWTs, signAssessJWT, verifyRefreshJWT } from '../../Helper/jwtHelper.js';
 import { adminAuth } from '../../MiddleWares/Joy-Valication/AuthMiddleware/authMiddleware.js';
+import { createOTP } from '../../utils/randomGenerator.js';
+import { insertSesion } from '../../Modles/Modals/SessionModel.js';
 
 //server side validation
 //encrypt user password
@@ -17,7 +19,6 @@ import { adminAuth } from '../../MiddleWares/Joy-Valication/AuthMiddleware/authM
 router.get('/', adminAuth, async (req, res, next) => {
     try {
         const user = req.adminInfo;
-        console.log(user);
         user.password = undefined;
         user.refreshJWT = undefined;
         res.json({
@@ -30,7 +31,7 @@ router.get('/', adminAuth, async (req, res, next) => {
     }
 })
 
-router.post('/', adminAuth, newAdminUservalidation, async (req, res, next) => {
+router.post('/', newAdminUservalidation, async (req, res, next) => {
     try {
         const { password } = req.body;
         req.body.password = hashPasswords(password);
@@ -87,10 +88,38 @@ router.put('/', updateAdminUservalidation, async (req, res, next) => {
     }
 })
 
-router.patch('/', adminAuth, updateAdinPasswordaValidation, (req, res, next) => {
+router.patch('/', adminAuth, updateAdinPasswordaValidation, async (req, res, next) => {
     try {
-        console.log(req.body);
+        const { currentPassword, _id, newPassword } = req.body;
 
+        const userId = req.adminInfo._id.toString();
+
+        if (_id !== userId) {
+            return res.json({
+                status: 'error',
+                message: 'Invalid user request',
+            })
+        }
+        // aA12345
+        const passFormDb = req.adminInfo.password;
+        //check if the password is valid
+        const isMatched = comparePassword(currentPassword, passFormDb);
+        if (isMatched) {
+            //encrypt the new password
+            const hashedPasswords = hashPasswords(newPassword);
+            //update the password in hatch
+            const result = await updateOneAdminUser({ _id }, { password: hashedPasswords })
+
+            result?._id ?
+                res.json({
+                    status: 'success',
+                    message: 'password updated'
+                }) :
+                res.json({
+                    status: 'error',
+                    message: 'unable to updated',
+                })
+        }
     } catch (error) {
         next(error)
     }
@@ -207,6 +236,49 @@ router.get('/accessjwt', async (req, res, next) => {
     } catch (error) {
         error.status = 401
         next(error);
+    }
+})
+
+//password reset as logged out user
+
+router.post('/request-password-reset-otp', async (req, res, next) => {
+    try {
+        console.log(req.body);
+        //check if user exist
+        const { email } = req.body
+
+        if (email.includes('@')) {
+            const user = await findOneAdminUSer({ email })
+
+            if (user?._id) {
+                //create uniq code and store in the datas with the email
+                const otp = createOTP();
+
+                const obj = {
+                    token: otp,
+                    associate: email,
+                    type: 'updatePassword'
+                }
+
+                const result = await insertSesion(obj)
+                if (result?._id) {
+                    // email the otp to the client
+                    otpNotification({
+                        otp: result.token,
+                        fName: result.associate,
+                        email
+                    })
+
+                }
+            }
+        }
+
+        res.json({
+            status: 'success',
+            message: 'If the email exist in out system you will receive OTP and email'
+        })
+    } catch (error) {
+        next(error)
     }
 })
 

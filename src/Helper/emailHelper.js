@@ -55,3 +55,21 @@ export const userVerifiedNotification = (emailData) => {
     };
     emailProcessor(emailBody);
 }
+
+//send otp to the user email
+export const otpNotification = (emailData) => {
+    const emailBody = {
+        from: '"Shivamani Store" <myEmail@shivamani.com>',
+        to: emailData.email,
+        subject: "OTP for password reset",
+        text: `Hi ${emailData.fName},\n\nplease use the follow otp to reset your password ${emailData.otp}.\n\nBest regards,\nShivamani Store`,
+        html: `
+            <p>Hi ${emailData.fName},</p>
+            <p>Please use the following OTP to reset your new password</p>
+            <p>${emailData.otp}</p>
+            <br/>
+            <p>Best regards,<br/>Shivamani Store</p>
+        `
+    };
+    emailProcessor(emailBody);
+}

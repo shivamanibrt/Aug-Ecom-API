@@ -34,7 +34,7 @@ export const updateAdinPasswordaValidation = (req, res, next) => {
     //define rules 
     const schema = Joi.object({
         _id: SHORTSTR.required(),
-        password: SHORTSTR.required(),
+        currentPassword: SHORTSTR.required(),
         newPassword: SHORTSTR.required()
     })
     //give rules to the data

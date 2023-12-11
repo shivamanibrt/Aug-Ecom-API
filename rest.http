@@ -8,6 +8,16 @@ GET http://localhost:8000/api/v1/admin-user
 GET http://localhost:8000/api/v1/admin-user/accessjwt 
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFheXVzaEBlbWFpbC5jb20iLCJpYXQiOjE2OTYwMzgxMjAsImV4cCI6MTY5ODYzMDEyMH0.C5-cms1rfHbAQRs9TCJPOHSD991JVmdhuUEHqIDJhjw
 
+###request otp for password reset
+POST  http://localhost:8000/api/v1/admin-user/request-password-reset-otp
+Content-Type: application/json 
+
+{
+    "email":"aayush@email.com"
+}
+
+
+
 ###Post new admin user
 POST http://localhost:8000/api/v1/admin-user
 Content-Type: application/json
