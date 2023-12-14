@@ -40,6 +40,16 @@ export const updateAdinPasswordaValidation = (req, res, next) => {
     //give rules to the data
     validator(schema, req, res, next);
 }
+export const resetAdminPasswordaValidation = (req, res, next) => {
+    //define rules 
+    const schema = Joi.object({
+        email: EMAIL.required(),
+        password: SHORTSTR.required(),
+        otp: NUMBER.required()
+    })
+    //give rules to the data
+    validator(schema, req, res, next);
+}
 
 export const emailVerificationValidation = (req, res, next) => {
     const schema = Joi.object({

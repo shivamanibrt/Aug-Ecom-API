@@ -1,14 +1,14 @@
 import express from 'express';
 import { deleteAdminUser, findOneAdminUSer, getAdminUSer, insertAdminUSer, updateOneAdminUser } from '../../Modles/adminUser/AdminUserModal.js';
 import { comparePassword, hashPasswords } from '../../Helper/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUservalidation, updateAdinPasswordaValidation, updateAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUservalidation, resetAdminPasswordaValidation, updateAdinPasswordaValidation, updateAdminUservalidation } from '../../MiddleWares/Joy-Valication/joiValidation.js';
 const router = express.Router();
 import { v4 as uuidv4 } from 'uuid';
 import { otpNotification, userVerifiedNotification, verificationEmail } from '../../Helper/emailHelper.js';
 import { createJWTs, signAssessJWT, verifyRefreshJWT } from '../../Helper/jwtHelper.js';
 import { adminAuth } from '../../MiddleWares/Joy-Valication/AuthMiddleware/authMiddleware.js';
 import { createOTP } from '../../utils/randomGenerator.js';
-import { insertSesion } from '../../Modles/Modals/SessionModel.js';
+import { deleteSession, insertSesion } from '../../Modles/Modals/SessionModel.js';
 
 //server side validation
 //encrypt user password
@@ -239,11 +239,9 @@ router.get('/accessjwt', async (req, res, next) => {
     }
 })
 
-//password reset as logged out user
-
+//request otp
 router.post('/request-password-reset-otp', async (req, res, next) => {
     try {
-        console.log(req.body);
         //check if user exist
         const { email } = req.body
 
@@ -275,9 +273,50 @@ router.post('/request-password-reset-otp', async (req, res, next) => {
 
         res.json({
             status: 'success',
-            message: 'If the email exist in out system you will receive OTP and email'
+            message: 'If the email exist in our system you will receive OTP and email instruction to reset the password'
         })
     } catch (error) {
+        next(error)
+    }
+})
+
+//password reset as logged out user
+router.patch('/reset-password', resetAdminPasswordaValidation, async (req, res, next) => {
+    try {
+        //check if user exist
+        const { email, otp, password } = req.body;
+
+        const filter = {
+            token: otp,
+            associate: email,
+            type: 'updatePassword',
+        }
+
+        //find if the filter exist in the session table and delete it.
+        const result = await deleteSession(filter);
+
+        // if delete is succed 
+        if (result?._id) {
+            //then encrypt the password and update in user table 
+            const ecrypted = hashPasswords(password)
+
+            const user = await updateOneAdminUser({ email }, { password: ecrypted })
+
+            if (user?._id) {
+                return res.json({
+                    status: 'success',
+                    message: 'Your password is reset succesfully'
+                })
+            }
+        }
+
+        res.json({
+            status: 'error',
+            message: 'Invalid request'
+        })
+
+    } catch (error) {
+        console.error('Error in hashPasswords:', error);
         next(error)
     }
 })
