@@ -21,11 +21,13 @@ import catagoryRouter from './src/Router/Catagory/catagoryRouter.js';
 import adminUserRouter from './src/Router/AdminUser/adminUserRouter.js';
 import paymentMethodRouter from './src/Router/PaymentMethod/paymentMethodRouter.js';
 import productsRouter from './src/Router/Product/productsRouter.js'
+import orderRouter from './src/Router/OrderRouter/orderRouter.js'
 
 app.use('/api/v1/admin-user', adminUserRouter)
 app.use('/api/v1/catagory', catagoryRouter)
 app.use('/api/v1/paymentMethod', paymentMethodRouter)
 app.use('/api/v1/product', productsRouter)
+app.use('/api/v1/order', orderRouter)
 
 //dbConnection
 import { dbConnect } from './src/Config/dbConfig.js';

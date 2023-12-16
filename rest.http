@@ -141,3 +141,54 @@ Content-Type: application/json
     "salesEndDate":null,
     "catId":"653a30a2e0dc67a70fe3dc28"
 }
+
+#------------ OrderAPI
+### get Orders
+GET http://localhost:8000/api/v1/order
+
+###post orders
+POST  http://localhost:8000/api/v1/order
+Content-Type: application/json
+
+{
+    "status": "processing",
+    "buyer": {
+        "buyerId": "xbv47",
+        "fName": "Aayush",
+        "lName": "Bartaula",
+        "email": "aayush@example.com",
+        "phone": "0414449540"
+    },
+    "cart": [
+        {
+            "productId": "sdasda",
+            "productName": "asdas",
+            "salesPrice": 111,
+            "qty": 2,
+            "thumbnail": "http",
+            "subTotal": 300
+        }
+    ],
+    "shipping": {
+        "fName": "Shivamani",
+        "lName": "Bartaula",
+        "phone": "21321",
+        "street": "10 George st",
+        "postcode": "2000",
+        "state": "NSW",
+        "country": "Australia"
+    },
+    "cartTotal": 450,
+    "discount": 50,
+    "discountCode": "disCode",
+    "totalAmount": 400,
+    "paymentInfo": {
+        "status": "paid",
+        "method": "cash",
+        "paidAmount": 400,
+        "transactionId": "sadas",
+        "paidDate": "2020-02-20"
+    }
+}
+
+
